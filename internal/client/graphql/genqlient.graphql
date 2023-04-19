@@ -1,0 +1,9 @@
+mutation CreatePerson($person: PersonInsertInput!) {
+  person: insertPersonOne(
+    object: $person
+    onConflict: { constraint: person_pkey, updateColumns: [id] }
+  ) {
+    id
+    validTimeRange
+  }
+}

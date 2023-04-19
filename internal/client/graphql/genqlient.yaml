@@ -1,0 +1,28 @@
+# Default genqlient config; for full documentation see:
+# https://github.com/Khan/genqlient/blob/main/docs/genqlient.yaml
+schema: ../../../hasura.sdl.graphqls
+operations:
+- genqlient.graphql
+generated: generated.go
+# We need to use pointers for optional types, otherwise a self-referential Go
+# struct (as is common within Hasura's schema) won't compile.
+# See https://github.com/Khan/genqlient/issues/152
+optional: pointer
+use_struct_references: true
+bindings:
+  uuid:
+    type: string
+  timestamptz:
+    type: time.Time
+  bigint:
+    type: int64
+  license_type_scalar:
+    type: string
+  citext:
+    type: string
+  jsonb:
+    type: any
+  tstzrange:
+    type: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/internal/postgres/TimeRange
+    marshaler: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/internal/postgres.MarshalTimeRange
+    unmarshaler: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/internal/postgres.UnmarshalTimeRange
