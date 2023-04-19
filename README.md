@@ -13,4 +13,4 @@ The `person` table has a relationship to the `address` table.
 
 - The `person-writer` role has full permissions on the `person` table.
 - The `address-reader` role has read permissions on the `address` table.
-- The application uses both roles via an Inherited Role. 
+- The application uses both roles via an Inherited Role.
