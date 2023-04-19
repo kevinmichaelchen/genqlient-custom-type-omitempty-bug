@@ -23,6 +23,6 @@ bindings:
   jsonb:
     type: any
   tstzrange:
-    type: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/internal/postgres/TimeRange
-    marshaler: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/internal/postgres.MarshalTimeRange
-    unmarshaler: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/internal/postgres.UnmarshalTimeRange
+    type: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/pkg/postgres.TimeRange
+    marshaler: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/pkg/postgres.MarshalTimeRange
+    unmarshaler: github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/pkg/postgres.UnmarshalTimeRange
