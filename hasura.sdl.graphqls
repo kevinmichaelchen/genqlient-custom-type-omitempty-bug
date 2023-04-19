@@ -1,0 +1,1059 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+columns and relationships of "address"
+"""
+type Address {
+  addressLines(
+    """JSON select path"""
+    path: String
+  ): jsonb
+  administrativeArea: String
+  id: uuid!
+  locality: String
+
+  """An object relationship"""
+  person: Person
+  personId: uuid!
+  postalCode: String
+  regionCode: String!
+  sublocality: String
+}
+
+"""
+aggregated selection of "address"
+"""
+type AddressAggregate {
+  aggregate: AddressAggregateFields
+  nodes: [Address!]!
+}
+
+"""
+aggregate fields of "address"
+"""
+type AddressAggregateFields {
+  count(columns: [AddressSelectColumn!], distinct: Boolean): Int!
+  max: AddressMaxFields
+  min: AddressMinFields
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input AddressAppendInput {
+  addressLines: jsonb
+}
+
+"""
+Boolean expression to filter rows from the table "address". All fields are combined with a logical 'AND'.
+"""
+input AddressBoolExp {
+  _and: [AddressBoolExp!]
+  _not: AddressBoolExp
+  _or: [AddressBoolExp!]
+  addressLines: JsonbComparisonExp
+  administrativeArea: StringComparisonExp
+  id: UuidComparisonExp
+  locality: StringComparisonExp
+  person: PersonBoolExp
+  personId: UuidComparisonExp
+  postalCode: StringComparisonExp
+  regionCode: StringComparisonExp
+  sublocality: StringComparisonExp
+}
+
+"""
+unique or primary key constraints on table "address"
+"""
+enum AddressConstraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  address_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input AddressDeleteAtPathInput {
+  addressLines: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input AddressDeleteElemInput {
+  addressLines: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input AddressDeleteKeyInput {
+  addressLines: String
+}
+
+"""
+input type for inserting data into table "address"
+"""
+input AddressInsertInput {
+  addressLines: jsonb
+  administrativeArea: String
+  id: uuid
+  locality: String
+  person: PersonObjRelInsertInput
+  personId: uuid
+  postalCode: String
+  regionCode: String
+  sublocality: String
+}
+
+"""aggregate max on columns"""
+type AddressMaxFields {
+  administrativeArea: String
+  id: uuid
+  locality: String
+  personId: uuid
+  postalCode: String
+  regionCode: String
+  sublocality: String
+}
+
+"""aggregate min on columns"""
+type AddressMinFields {
+  administrativeArea: String
+  id: uuid
+  locality: String
+  personId: uuid
+  postalCode: String
+  regionCode: String
+  sublocality: String
+}
+
+"""
+response of any mutation on the table "address"
+"""
+type AddressMutationResponse {
+  """number of rows affected by the mutation"""
+  affectedRows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [Address!]!
+}
+
+"""
+input type for inserting object relation for remote table "address"
+"""
+input AddressObjRelInsertInput {
+  data: AddressInsertInput!
+
+  """upsert condition"""
+  onConflict: AddressOnConflict
+}
+
+"""
+on_conflict condition type for table "address"
+"""
+input AddressOnConflict {
+  constraint: AddressConstraint!
+  updateColumns: [AddressUpdateColumn!]! = []
+  where: AddressBoolExp
+}
+
+"""Ordering options when selecting data from "address"."""
+input AddressOrderBy {
+  addressLines: OrderBy
+  administrativeArea: OrderBy
+  id: OrderBy
+  locality: OrderBy
+  person: PersonOrderBy
+  personId: OrderBy
+  postalCode: OrderBy
+  regionCode: OrderBy
+  sublocality: OrderBy
+}
+
+"""primary key columns input for table: address"""
+input AddressPkColumnsInput {
+  id: uuid!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input AddressPrependInput {
+  addressLines: jsonb
+}
+
+"""
+select columns of table "address"
+"""
+enum AddressSelectColumn {
+  """column name"""
+  addressLines
+
+  """column name"""
+  administrativeArea
+
+  """column name"""
+  id
+
+  """column name"""
+  locality
+
+  """column name"""
+  personId
+
+  """column name"""
+  postalCode
+
+  """column name"""
+  regionCode
+
+  """column name"""
+  sublocality
+}
+
+"""
+input type for updating data in table "address"
+"""
+input AddressSetInput {
+  addressLines: jsonb
+  administrativeArea: String
+  id: uuid
+  locality: String
+  personId: uuid
+  postalCode: String
+  regionCode: String
+  sublocality: String
+}
+
+"""
+Streaming cursor of the table "address"
+"""
+input AddressStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: AddressStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input AddressStreamCursorValueInput {
+  addressLines: jsonb
+  administrativeArea: String
+  id: uuid
+  locality: String
+  personId: uuid
+  postalCode: String
+  regionCode: String
+  sublocality: String
+}
+
+"""
+update columns of table "address"
+"""
+enum AddressUpdateColumn {
+  """column name"""
+  addressLines
+
+  """column name"""
+  administrativeArea
+
+  """column name"""
+  id
+
+  """column name"""
+  locality
+
+  """column name"""
+  personId
+
+  """column name"""
+  postalCode
+
+  """column name"""
+  regionCode
+
+  """column name"""
+  sublocality
+}
+
+input AddressUpdates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: AddressAppendInput
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _deleteAtPath: AddressDeleteAtPathInput
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _deleteElem: AddressDeleteElemInput
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _deleteKey: AddressDeleteKeyInput
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: AddressPrependInput
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: AddressSetInput
+
+  """filter the rows which have to be updated"""
+  where: AddressBoolExp!
+}
+
+"""ordering argument of a cursor"""
+enum CursorOrdering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
+}
+
+input JsonbCastExp {
+  String: StringComparisonExp
+}
+
+"""
+Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'.
+"""
+input JsonbComparisonExp {
+  _cast: JsonbCastExp
+
+  """is the column contained in the given json value"""
+  _containedIn: jsonb
+
+  """does the column contain the given json value at the top level"""
+  _contains: jsonb
+  _eq: jsonb
+  _gt: jsonb
+  _gte: jsonb
+
+  """does the string exist as a top-level key in the column"""
+  _hasKey: String
+
+  """do all of these strings exist as top-level keys in the column"""
+  _hasKeysAll: [String!]
+
+  """do any of these strings exist as top-level keys in the column"""
+  _hasKeysAny: [String!]
+  _in: [jsonb!]
+  _isNull: Boolean
+  _lt: jsonb
+  _lte: jsonb
+  _neq: jsonb
+  _nin: [jsonb!]
+}
+
+"""column ordering options"""
+enum OrderBy {
+  """in ascending order, nulls last"""
+  ASC
+
+  """in ascending order, nulls first"""
+  ASC_NULLS_FIRST
+
+  """in ascending order, nulls last"""
+  ASC_NULLS_LAST
+
+  """in descending order, nulls first"""
+  DESC
+
+  """in descending order, nulls first"""
+  DESC_NULLS_FIRST
+
+  """in descending order, nulls last"""
+  DESC_NULLS_LAST
+}
+
+"""
+columns and relationships of "person"
+"""
+type Person {
+  """An object relationship"""
+  address: Address
+  birthTime: timestamptz!
+  id: uuid!
+  name: String!
+  validTimeRange: tstzrange!
+}
+
+"""
+aggregated selection of "person"
+"""
+type PersonAggregate {
+  aggregate: PersonAggregateFields
+  nodes: [Person!]!
+}
+
+"""
+aggregate fields of "person"
+"""
+type PersonAggregateFields {
+  count(columns: [PersonSelectColumn!], distinct: Boolean): Int!
+  max: PersonMaxFields
+  min: PersonMinFields
+}
+
+"""
+Boolean expression to filter rows from the table "person". All fields are combined with a logical 'AND'.
+"""
+input PersonBoolExp {
+  _and: [PersonBoolExp!]
+  _not: PersonBoolExp
+  _or: [PersonBoolExp!]
+  address: AddressBoolExp
+  birthTime: TimestamptzComparisonExp
+  id: UuidComparisonExp
+  name: StringComparisonExp
+  validTimeRange: TstzrangeComparisonExp
+}
+
+"""
+unique or primary key constraints on table "person"
+"""
+enum PersonConstraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  person_pkey
+}
+
+"""
+input type for inserting data into table "person"
+"""
+input PersonInsertInput {
+  address: AddressObjRelInsertInput
+  birthTime: timestamptz
+  id: uuid
+  name: String
+  validTimeRange: tstzrange
+}
+
+"""aggregate max on columns"""
+type PersonMaxFields {
+  birthTime: timestamptz
+  id: uuid
+  name: String
+}
+
+"""aggregate min on columns"""
+type PersonMinFields {
+  birthTime: timestamptz
+  id: uuid
+  name: String
+}
+
+"""
+response of any mutation on the table "person"
+"""
+type PersonMutationResponse {
+  """number of rows affected by the mutation"""
+  affectedRows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [Person!]!
+}
+
+"""
+input type for inserting object relation for remote table "person"
+"""
+input PersonObjRelInsertInput {
+  data: PersonInsertInput!
+
+  """upsert condition"""
+  onConflict: PersonOnConflict
+}
+
+"""
+on_conflict condition type for table "person"
+"""
+input PersonOnConflict {
+  constraint: PersonConstraint!
+  updateColumns: [PersonUpdateColumn!]! = []
+  where: PersonBoolExp
+}
+
+"""Ordering options when selecting data from "person"."""
+input PersonOrderBy {
+  address: AddressOrderBy
+  birthTime: OrderBy
+  id: OrderBy
+  name: OrderBy
+  validTimeRange: OrderBy
+}
+
+"""primary key columns input for table: person"""
+input PersonPkColumnsInput {
+  id: uuid!
+}
+
+"""
+select columns of table "person"
+"""
+enum PersonSelectColumn {
+  """column name"""
+  birthTime
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  validTimeRange
+}
+
+"""
+input type for updating data in table "person"
+"""
+input PersonSetInput {
+  birthTime: timestamptz
+  id: uuid
+  name: String
+  validTimeRange: tstzrange
+}
+
+"""
+Streaming cursor of the table "person"
+"""
+input PersonStreamCursorInput {
+  """Stream column input with initial value"""
+  initialValue: PersonStreamCursorValueInput!
+
+  """cursor ordering"""
+  ordering: CursorOrdering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input PersonStreamCursorValueInput {
+  birthTime: timestamptz
+  id: uuid
+  name: String
+  validTimeRange: tstzrange
+}
+
+"""
+update columns of table "person"
+"""
+enum PersonUpdateColumn {
+  """column name"""
+  birthTime
+
+  """column name"""
+  id
+
+  """column name"""
+  name
+
+  """column name"""
+  validTimeRange
+}
+
+input PersonUpdates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: PersonSetInput
+
+  """filter the rows which have to be updated"""
+  where: PersonBoolExp!
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input StringComparisonExp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _isNull: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input TimestamptzComparisonExp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _isNull: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""
+Boolean expression to compare columns of type "tstzrange". All fields are combined with logical 'AND'.
+"""
+input TstzrangeComparisonExp {
+  _eq: tstzrange
+  _gt: tstzrange
+  _gte: tstzrange
+  _in: [tstzrange!]
+  _isNull: Boolean
+  _lt: tstzrange
+  _lte: tstzrange
+  _neq: tstzrange
+  _nin: [tstzrange!]
+}
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input UuidComparisonExp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _isNull: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+
+scalar jsonb
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "address"
+  """
+  deleteAddress(
+    """filter the rows which have to be deleted"""
+    where: AddressBoolExp!
+  ): AddressMutationResponse
+
+  """
+  delete single row from the table: "address"
+  """
+  deleteAddressByPk(id: uuid!): Address
+
+  """
+  delete data from the table: "person"
+  """
+  deletePerson(
+    """filter the rows which have to be deleted"""
+    where: PersonBoolExp!
+  ): PersonMutationResponse
+
+  """
+  delete single row from the table: "person"
+  """
+  deletePersonByPk(id: uuid!): Person
+
+  """
+  insert data into the table: "address"
+  """
+  insertAddress(
+    """the rows to be inserted"""
+    objects: [AddressInsertInput!]!
+
+    """upsert condition"""
+    onConflict: AddressOnConflict
+  ): AddressMutationResponse
+
+  """
+  insert a single row into the table: "address"
+  """
+  insertAddressOne(
+    """the row to be inserted"""
+    object: AddressInsertInput!
+
+    """upsert condition"""
+    onConflict: AddressOnConflict
+  ): Address
+
+  """
+  insert data into the table: "person"
+  """
+  insertPerson(
+    """the rows to be inserted"""
+    objects: [PersonInsertInput!]!
+
+    """upsert condition"""
+    onConflict: PersonOnConflict
+  ): PersonMutationResponse
+
+  """
+  insert a single row into the table: "person"
+  """
+  insertPersonOne(
+    """the row to be inserted"""
+    object: PersonInsertInput!
+
+    """upsert condition"""
+    onConflict: PersonOnConflict
+  ): Person
+
+  """
+  update data of the table: "address"
+  """
+  updateAddress(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: AddressAppendInput
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _deleteAtPath: AddressDeleteAtPathInput
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _deleteElem: AddressDeleteElemInput
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _deleteKey: AddressDeleteKeyInput
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: AddressPrependInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: AddressSetInput
+
+    """filter the rows which have to be updated"""
+    where: AddressBoolExp!
+  ): AddressMutationResponse
+
+  """
+  update single row of the table: "address"
+  """
+  updateAddressByPk(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: AddressAppendInput
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _deleteAtPath: AddressDeleteAtPathInput
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _deleteElem: AddressDeleteElemInput
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _deleteKey: AddressDeleteKeyInput
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: AddressPrependInput
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: AddressSetInput
+    pkColumns: AddressPkColumnsInput!
+  ): Address
+
+  """
+  update multiples rows of table: "address"
+  """
+  updateAddressMany(
+    """updates to execute, in order"""
+    updates: [AddressUpdates!]!
+  ): [AddressMutationResponse]
+
+  """
+  update data of the table: "person"
+  """
+  updatePerson(
+    """sets the columns of the filtered rows to the given values"""
+    _set: PersonSetInput
+
+    """filter the rows which have to be updated"""
+    where: PersonBoolExp!
+  ): PersonMutationResponse
+
+  """
+  update single row of the table: "person"
+  """
+  updatePersonByPk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: PersonSetInput
+    pkColumns: PersonPkColumnsInput!
+  ): Person
+
+  """
+  update multiples rows of table: "person"
+  """
+  updatePersonMany(
+    """updates to execute, in order"""
+    updates: [PersonUpdates!]!
+  ): [PersonMutationResponse]
+}
+
+type query_root {
+  """
+  fetch data from the table: "address"
+  """
+  address(
+    """distinct select on columns"""
+    distinctOn: [AddressSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [AddressOrderBy!]
+
+    """filter the rows returned"""
+    where: AddressBoolExp
+  ): [Address!]!
+
+  """
+  fetch aggregated fields from the table: "address"
+  """
+  addressAggregate(
+    """distinct select on columns"""
+    distinctOn: [AddressSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [AddressOrderBy!]
+
+    """filter the rows returned"""
+    where: AddressBoolExp
+  ): AddressAggregate!
+
+  """fetch data from the table: "address" using primary key columns"""
+  addressByPk(id: uuid!): Address
+
+  """
+  fetch data from the table: "person"
+  """
+  person(
+    """distinct select on columns"""
+    distinctOn: [PersonSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PersonOrderBy!]
+
+    """filter the rows returned"""
+    where: PersonBoolExp
+  ): [Person!]!
+
+  """
+  fetch aggregated fields from the table: "person"
+  """
+  personAggregate(
+    """distinct select on columns"""
+    distinctOn: [PersonSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PersonOrderBy!]
+
+    """filter the rows returned"""
+    where: PersonBoolExp
+  ): PersonAggregate!
+
+  """fetch data from the table: "person" using primary key columns"""
+  personByPk(id: uuid!): Person
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "address"
+  """
+  address(
+    """distinct select on columns"""
+    distinctOn: [AddressSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [AddressOrderBy!]
+
+    """filter the rows returned"""
+    where: AddressBoolExp
+  ): [Address!]!
+
+  """
+  fetch aggregated fields from the table: "address"
+  """
+  addressAggregate(
+    """distinct select on columns"""
+    distinctOn: [AddressSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [AddressOrderBy!]
+
+    """filter the rows returned"""
+    where: AddressBoolExp
+  ): AddressAggregate!
+
+  """fetch data from the table: "address" using primary key columns"""
+  addressByPk(id: uuid!): Address
+
+  """
+  fetch data from the table in a streaming manner: "address"
+  """
+  addressStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [AddressStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: AddressBoolExp
+  ): [Address!]!
+
+  """
+  fetch data from the table: "person"
+  """
+  person(
+    """distinct select on columns"""
+    distinctOn: [PersonSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PersonOrderBy!]
+
+    """filter the rows returned"""
+    where: PersonBoolExp
+  ): [Person!]!
+
+  """
+  fetch aggregated fields from the table: "person"
+  """
+  personAggregate(
+    """distinct select on columns"""
+    distinctOn: [PersonSelectColumn!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    orderBy: [PersonOrderBy!]
+
+    """filter the rows returned"""
+    where: PersonBoolExp
+  ): PersonAggregate!
+
+  """fetch data from the table: "person" using primary key columns"""
+  personByPk(id: uuid!): Person
+
+  """
+  fetch data from the table in a streaming manner: "person"
+  """
+  personStream(
+    """maximum number of rows returned in a single batch"""
+    batchSize: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [PersonStreamCursorInput]!
+
+    """filter the rows returned"""
+    where: PersonBoolExp
+  ): [Person!]!
+}
+
+scalar timestamptz
+
+scalar tstzrange
+
+scalar uuid
+
