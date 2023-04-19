@@ -391,7 +391,6 @@ type Person {
   address: Address
   id: uuid!
   name: String!
-  validTimeRange: tstzrange!
 }
 
 """
@@ -421,7 +420,6 @@ input PersonBoolExp {
   address: AddressBoolExp
   id: UuidComparisonExp
   name: StringComparisonExp
-  validTimeRange: TstzrangeComparisonExp
 }
 
 """
@@ -441,7 +439,6 @@ input PersonInsertInput {
   address: AddressObjRelInsertInput
   id: uuid
   name: String
-  validTimeRange: tstzrange
 }
 
 """aggregate max on columns"""
@@ -491,7 +488,6 @@ input PersonOrderBy {
   address: AddressOrderBy
   id: OrderBy
   name: OrderBy
-  validTimeRange: OrderBy
 }
 
 """primary key columns input for table: person"""
@@ -508,9 +504,6 @@ enum PersonSelectColumn {
 
   """column name"""
   name
-
-  """column name"""
-  validTimeRange
 }
 
 """
@@ -519,7 +512,6 @@ input type for updating data in table "person"
 input PersonSetInput {
   id: uuid
   name: String
-  validTimeRange: tstzrange
 }
 
 """
@@ -537,7 +529,6 @@ input PersonStreamCursorInput {
 input PersonStreamCursorValueInput {
   id: uuid
   name: String
-  validTimeRange: tstzrange
 }
 
 """
@@ -549,9 +540,6 @@ enum PersonUpdateColumn {
 
   """column name"""
   name
-
-  """column name"""
-  validTimeRange
 }
 
 input PersonUpdates {
@@ -613,21 +601,6 @@ input StringComparisonExp {
 
   """does the column match the given SQL regular expression"""
   _similar: String
-}
-
-"""
-Boolean expression to compare columns of type "tstzrange". All fields are combined with logical 'AND'.
-"""
-input TstzrangeComparisonExp {
-  _eq: tstzrange
-  _gt: tstzrange
-  _gte: tstzrange
-  _in: [tstzrange!]
-  _isNull: Boolean
-  _lt: tstzrange
-  _lte: tstzrange
-  _neq: tstzrange
-  _nin: [tstzrange!]
 }
 
 """
@@ -1021,8 +994,6 @@ type subscription_root {
     where: PersonBoolExp
   ): [Person!]!
 }
-
-scalar tstzrange
 
 scalar uuid
 

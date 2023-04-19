@@ -18,21 +18,18 @@ insert_permissions:
       columns:
         - id
         - name
-        - valid_time_range
 select_permissions:
   - role: person-writer
     permission:
       columns:
-        - name
-        - valid_time_range
         - id
+        - name
       filter: {}
 update_permissions:
   - role: person-writer
     permission:
       columns:
-        - name
-        - valid_time_range
         - id
+        - name
       filter: {}
       check: {}

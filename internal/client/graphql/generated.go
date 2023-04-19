@@ -4,11 +4,8 @@ package graphql
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
 
 	"github.com/Khan/genqlient/graphql"
-	"github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/pkg/postgres"
 )
 
 // Boolean expression to filter rows from the table "address". All fields are combined with a logical 'AND'.
@@ -167,81 +164,11 @@ const (
 //
 // columns and relationships of "person"
 type CreatePersonPerson struct {
-	Id             string             `json:"id"`
-	ValidTimeRange postgres.TimeRange `json:"-"`
+	Id string `json:"id"`
 }
 
 // GetId returns CreatePersonPerson.Id, and is useful for accessing the field via an interface.
 func (v *CreatePersonPerson) GetId() string { return v.Id }
-
-// GetValidTimeRange returns CreatePersonPerson.ValidTimeRange, and is useful for accessing the field via an interface.
-func (v *CreatePersonPerson) GetValidTimeRange() postgres.TimeRange { return v.ValidTimeRange }
-
-func (v *CreatePersonPerson) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*CreatePersonPerson
-		ValidTimeRange json.RawMessage `json:"validTimeRange"`
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.CreatePersonPerson = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	{
-		dst := &v.ValidTimeRange
-		src := firstPass.ValidTimeRange
-		if len(src) != 0 && string(src) != "null" {
-			err = postgres.UnmarshalTimeRange(
-				src, dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal CreatePersonPerson.ValidTimeRange: %w", err)
-			}
-		}
-	}
-	return nil
-}
-
-type __premarshalCreatePersonPerson struct {
-	Id string `json:"id"`
-
-	ValidTimeRange json.RawMessage `json:"validTimeRange"`
-}
-
-func (v *CreatePersonPerson) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *CreatePersonPerson) __premarshalJSON() (*__premarshalCreatePersonPerson, error) {
-	var retval __premarshalCreatePersonPerson
-
-	retval.Id = v.Id
-	{
-
-		dst := &retval.ValidTimeRange
-		src := v.ValidTimeRange
-		var err error
-		*dst, err = postgres.MarshalTimeRange(
-			&src)
-		if err != nil {
-			return nil, fmt.Errorf(
-				"Unable to marshal CreatePersonPerson.ValidTimeRange: %w", err)
-		}
-	}
-	return &retval, nil
-}
 
 // CreatePersonResponse is returned by CreatePerson on success.
 type CreatePersonResponse struct {
@@ -330,13 +257,12 @@ func (v *JsonbComparisonExp) GetNin() []any { return v.Nin }
 
 // Boolean expression to filter rows from the table "person". All fields are combined with a logical 'AND'.
 type PersonBoolExp struct {
-	And            []*PersonBoolExp        `json:"_and,omitempty"`
-	Not            *PersonBoolExp          `json:"_not,omitempty"`
-	Or             []*PersonBoolExp        `json:"_or,omitempty"`
-	Address        *AddressBoolExp         `json:"address,omitempty"`
-	Id             *UuidComparisonExp      `json:"id,omitempty"`
-	Name           *StringComparisonExp    `json:"name,omitempty"`
-	ValidTimeRange *TstzrangeComparisonExp `json:"validTimeRange,omitempty"`
+	And     []*PersonBoolExp     `json:"_and,omitempty"`
+	Not     *PersonBoolExp       `json:"_not,omitempty"`
+	Or      []*PersonBoolExp     `json:"_or,omitempty"`
+	Address *AddressBoolExp      `json:"address,omitempty"`
+	Id      *UuidComparisonExp   `json:"id,omitempty"`
+	Name    *StringComparisonExp `json:"name,omitempty"`
 }
 
 // GetAnd returns PersonBoolExp.And, and is useful for accessing the field via an interface.
@@ -357,9 +283,6 @@ func (v *PersonBoolExp) GetId() *UuidComparisonExp { return v.Id }
 // GetName returns PersonBoolExp.Name, and is useful for accessing the field via an interface.
 func (v *PersonBoolExp) GetName() *StringComparisonExp { return v.Name }
 
-// GetValidTimeRange returns PersonBoolExp.ValidTimeRange, and is useful for accessing the field via an interface.
-func (v *PersonBoolExp) GetValidTimeRange() *TstzrangeComparisonExp { return v.ValidTimeRange }
-
 // unique or primary key constraints on table "person"
 type PersonConstraint string
 
@@ -370,10 +293,9 @@ const (
 
 // input type for inserting data into table "person"
 type PersonInsertInput struct {
-	Address        *AddressObjRelInsertInput `json:"address,omitempty"`
-	Id             *string                   `json:"id"`
-	Name           *string                   `json:"name"`
-	ValidTimeRange *postgres.TimeRange       `json:"-"`
+	Address *AddressObjRelInsertInput `json:"address,omitempty"`
+	Id      *string                   `json:"id"`
+	Name    *string                   `json:"name"`
 }
 
 // GetAddress returns PersonInsertInput.Address, and is useful for accessing the field via an interface.
@@ -384,84 +306,6 @@ func (v *PersonInsertInput) GetId() *string { return v.Id }
 
 // GetName returns PersonInsertInput.Name, and is useful for accessing the field via an interface.
 func (v *PersonInsertInput) GetName() *string { return v.Name }
-
-// GetValidTimeRange returns PersonInsertInput.ValidTimeRange, and is useful for accessing the field via an interface.
-func (v *PersonInsertInput) GetValidTimeRange() *postgres.TimeRange { return v.ValidTimeRange }
-
-func (v *PersonInsertInput) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*PersonInsertInput
-		ValidTimeRange json.RawMessage `json:"validTimeRange"`
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.PersonInsertInput = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	{
-		dst := &v.ValidTimeRange
-		src := firstPass.ValidTimeRange
-		if len(src) != 0 && string(src) != "null" {
-			*dst = new(postgres.TimeRange)
-			err = postgres.UnmarshalTimeRange(
-				src, *dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal PersonInsertInput.ValidTimeRange: %w", err)
-			}
-		}
-	}
-	return nil
-}
-
-type __premarshalPersonInsertInput struct {
-	Address *AddressObjRelInsertInput `json:"address"`
-
-	Id *string `json:"id"`
-
-	Name *string `json:"name"`
-
-	ValidTimeRange json.RawMessage `json:"validTimeRange"`
-}
-
-func (v *PersonInsertInput) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *PersonInsertInput) __premarshalJSON() (*__premarshalPersonInsertInput, error) {
-	var retval __premarshalPersonInsertInput
-
-	retval.Address = v.Address
-	retval.Id = v.Id
-	retval.Name = v.Name
-	{
-
-		dst := &retval.ValidTimeRange
-		src := v.ValidTimeRange
-		if src != nil {
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal PersonInsertInput.ValidTimeRange: %w", err)
-			}
-		}
-	}
-	return &retval, nil
-}
 
 // input type for inserting object relation for remote table "person"
 type PersonObjRelInsertInput struct {
@@ -500,8 +344,6 @@ const (
 	PersonUpdateColumnId PersonUpdateColumn = "id"
 	// column name
 	PersonUpdateColumnName PersonUpdateColumn = "name"
-	// column name
-	PersonUpdateColumnValidtimerange PersonUpdateColumn = "validTimeRange"
 )
 
 // Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
@@ -594,350 +436,6 @@ func (v *StringComparisonExp) GetRegex() *string { return v.Regex }
 // GetSimilar returns StringComparisonExp.Similar, and is useful for accessing the field via an interface.
 func (v *StringComparisonExp) GetSimilar() *string { return v.Similar }
 
-// Boolean expression to compare columns of type "tstzrange". All fields are combined with logical 'AND'.
-type TstzrangeComparisonExp struct {
-	Eq     *postgres.TimeRange  `json:"-"`
-	Gt     *postgres.TimeRange  `json:"-"`
-	Gte    *postgres.TimeRange  `json:"-"`
-	In     []postgres.TimeRange `json:"-"`
-	IsNull *bool                `json:"_isNull"`
-	Lt     *postgres.TimeRange  `json:"-"`
-	Lte    *postgres.TimeRange  `json:"-"`
-	Neq    *postgres.TimeRange  `json:"-"`
-	Nin    []postgres.TimeRange `json:"-"`
-}
-
-// GetEq returns TstzrangeComparisonExp.Eq, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetEq() *postgres.TimeRange { return v.Eq }
-
-// GetGt returns TstzrangeComparisonExp.Gt, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetGt() *postgres.TimeRange { return v.Gt }
-
-// GetGte returns TstzrangeComparisonExp.Gte, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetGte() *postgres.TimeRange { return v.Gte }
-
-// GetIn returns TstzrangeComparisonExp.In, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetIn() []postgres.TimeRange { return v.In }
-
-// GetIsNull returns TstzrangeComparisonExp.IsNull, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetIsNull() *bool { return v.IsNull }
-
-// GetLt returns TstzrangeComparisonExp.Lt, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetLt() *postgres.TimeRange { return v.Lt }
-
-// GetLte returns TstzrangeComparisonExp.Lte, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetLte() *postgres.TimeRange { return v.Lte }
-
-// GetNeq returns TstzrangeComparisonExp.Neq, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetNeq() *postgres.TimeRange { return v.Neq }
-
-// GetNin returns TstzrangeComparisonExp.Nin, and is useful for accessing the field via an interface.
-func (v *TstzrangeComparisonExp) GetNin() []postgres.TimeRange { return v.Nin }
-
-func (v *TstzrangeComparisonExp) UnmarshalJSON(b []byte) error {
-
-	if string(b) == "null" {
-		return nil
-	}
-
-	var firstPass struct {
-		*TstzrangeComparisonExp
-		Eq  json.RawMessage   `json:"_eq"`
-		Gt  json.RawMessage   `json:"_gt"`
-		Gte json.RawMessage   `json:"_gte"`
-		In  []json.RawMessage `json:"_in"`
-		Lt  json.RawMessage   `json:"_lt"`
-		Lte json.RawMessage   `json:"_lte"`
-		Neq json.RawMessage   `json:"_neq"`
-		Nin []json.RawMessage `json:"_nin"`
-		graphql.NoUnmarshalJSON
-	}
-	firstPass.TstzrangeComparisonExp = v
-
-	err := json.Unmarshal(b, &firstPass)
-	if err != nil {
-		return err
-	}
-
-	{
-		dst := &v.Eq
-		src := firstPass.Eq
-		if len(src) != 0 && string(src) != "null" {
-			*dst = new(postgres.TimeRange)
-			err = postgres.UnmarshalTimeRange(
-				src, *dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal TstzrangeComparisonExp.Eq: %w", err)
-			}
-		}
-	}
-
-	{
-		dst := &v.Gt
-		src := firstPass.Gt
-		if len(src) != 0 && string(src) != "null" {
-			*dst = new(postgres.TimeRange)
-			err = postgres.UnmarshalTimeRange(
-				src, *dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal TstzrangeComparisonExp.Gt: %w", err)
-			}
-		}
-	}
-
-	{
-		dst := &v.Gte
-		src := firstPass.Gte
-		if len(src) != 0 && string(src) != "null" {
-			*dst = new(postgres.TimeRange)
-			err = postgres.UnmarshalTimeRange(
-				src, *dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal TstzrangeComparisonExp.Gte: %w", err)
-			}
-		}
-	}
-
-	{
-		dst := &v.In
-		src := firstPass.In
-		*dst = make(
-			[]postgres.TimeRange,
-			len(src))
-		for i, src := range src {
-			dst := &(*dst)[i]
-			if len(src) != 0 && string(src) != "null" {
-				err = postgres.UnmarshalTimeRange(
-					src, dst)
-				if err != nil {
-					return fmt.Errorf(
-						"Unable to unmarshal TstzrangeComparisonExp.In: %w", err)
-				}
-			}
-		}
-	}
-
-	{
-		dst := &v.Lt
-		src := firstPass.Lt
-		if len(src) != 0 && string(src) != "null" {
-			*dst = new(postgres.TimeRange)
-			err = postgres.UnmarshalTimeRange(
-				src, *dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal TstzrangeComparisonExp.Lt: %w", err)
-			}
-		}
-	}
-
-	{
-		dst := &v.Lte
-		src := firstPass.Lte
-		if len(src) != 0 && string(src) != "null" {
-			*dst = new(postgres.TimeRange)
-			err = postgres.UnmarshalTimeRange(
-				src, *dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal TstzrangeComparisonExp.Lte: %w", err)
-			}
-		}
-	}
-
-	{
-		dst := &v.Neq
-		src := firstPass.Neq
-		if len(src) != 0 && string(src) != "null" {
-			*dst = new(postgres.TimeRange)
-			err = postgres.UnmarshalTimeRange(
-				src, *dst)
-			if err != nil {
-				return fmt.Errorf(
-					"Unable to unmarshal TstzrangeComparisonExp.Neq: %w", err)
-			}
-		}
-	}
-
-	{
-		dst := &v.Nin
-		src := firstPass.Nin
-		*dst = make(
-			[]postgres.TimeRange,
-			len(src))
-		for i, src := range src {
-			dst := &(*dst)[i]
-			if len(src) != 0 && string(src) != "null" {
-				err = postgres.UnmarshalTimeRange(
-					src, dst)
-				if err != nil {
-					return fmt.Errorf(
-						"Unable to unmarshal TstzrangeComparisonExp.Nin: %w", err)
-				}
-			}
-		}
-	}
-	return nil
-}
-
-type __premarshalTstzrangeComparisonExp struct {
-	Eq json.RawMessage `json:"_eq"`
-
-	Gt json.RawMessage `json:"_gt"`
-
-	Gte json.RawMessage `json:"_gte"`
-
-	In []json.RawMessage `json:"_in"`
-
-	IsNull *bool `json:"_isNull"`
-
-	Lt json.RawMessage `json:"_lt"`
-
-	Lte json.RawMessage `json:"_lte"`
-
-	Neq json.RawMessage `json:"_neq"`
-
-	Nin []json.RawMessage `json:"_nin"`
-}
-
-func (v *TstzrangeComparisonExp) MarshalJSON() ([]byte, error) {
-	premarshaled, err := v.__premarshalJSON()
-	if err != nil {
-		return nil, err
-	}
-	return json.Marshal(premarshaled)
-}
-
-func (v *TstzrangeComparisonExp) __premarshalJSON() (*__premarshalTstzrangeComparisonExp, error) {
-	var retval __premarshalTstzrangeComparisonExp
-
-	{
-
-		dst := &retval.Eq
-		src := v.Eq
-		if src != nil {
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal TstzrangeComparisonExp.Eq: %w", err)
-			}
-		}
-	}
-	{
-
-		dst := &retval.Gt
-		src := v.Gt
-		if src != nil {
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal TstzrangeComparisonExp.Gt: %w", err)
-			}
-		}
-	}
-	{
-
-		dst := &retval.Gte
-		src := v.Gte
-		if src != nil {
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal TstzrangeComparisonExp.Gte: %w", err)
-			}
-		}
-	}
-	{
-
-		dst := &retval.In
-		src := v.In
-		*dst = make(
-			[]json.RawMessage,
-			len(src))
-		for i, src := range src {
-			dst := &(*dst)[i]
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				&src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal TstzrangeComparisonExp.In: %w", err)
-			}
-		}
-	}
-	retval.IsNull = v.IsNull
-	{
-
-		dst := &retval.Lt
-		src := v.Lt
-		if src != nil {
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal TstzrangeComparisonExp.Lt: %w", err)
-			}
-		}
-	}
-	{
-
-		dst := &retval.Lte
-		src := v.Lte
-		if src != nil {
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal TstzrangeComparisonExp.Lte: %w", err)
-			}
-		}
-	}
-	{
-
-		dst := &retval.Neq
-		src := v.Neq
-		if src != nil {
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal TstzrangeComparisonExp.Neq: %w", err)
-			}
-		}
-	}
-	{
-
-		dst := &retval.Nin
-		src := v.Nin
-		*dst = make(
-			[]json.RawMessage,
-			len(src))
-		for i, src := range src {
-			dst := &(*dst)[i]
-			var err error
-			*dst, err = postgres.MarshalTimeRange(
-				&src)
-			if err != nil {
-				return nil, fmt.Errorf(
-					"Unable to marshal TstzrangeComparisonExp.Nin: %w", err)
-			}
-		}
-	}
-	return &retval, nil
-}
-
 // Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
 type UuidComparisonExp struct {
 	Eq     *string  `json:"_eq"`
@@ -997,7 +495,6 @@ func CreatePerson(
 mutation CreatePerson ($person: PersonInsertInput!) {
 	person: insertPersonOne(object: $person, onConflict: {constraint:person_pkey,updateColumns:[id]}) {
 		id
-		validTimeRange
 	}
 }
 `,
