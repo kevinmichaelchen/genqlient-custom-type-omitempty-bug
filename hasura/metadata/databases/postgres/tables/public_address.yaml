@@ -11,3 +11,16 @@ object_relationships:
         remote_table:
           name: person
           schema: public
+select_permissions:
+  - role: address-reader
+    permission:
+      columns:
+        - address_lines
+        - administrative_area
+        - locality
+        - postal_code
+        - region_code
+        - sublocality
+        - id
+        - person_id
+      filter: {}

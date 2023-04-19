@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"time"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/pkg/postgres"
@@ -331,14 +330,13 @@ func (v *JsonbComparisonExp) GetNin() []any { return v.Nin }
 
 // Boolean expression to filter rows from the table "person". All fields are combined with a logical 'AND'.
 type PersonBoolExp struct {
-	And            []*PersonBoolExp          `json:"_and,omitempty"`
-	Not            *PersonBoolExp            `json:"_not,omitempty"`
-	Or             []*PersonBoolExp          `json:"_or,omitempty"`
-	Address        *AddressBoolExp           `json:"address,omitempty"`
-	BirthTime      *TimestamptzComparisonExp `json:"birthTime,omitempty"`
-	Id             *UuidComparisonExp        `json:"id,omitempty"`
-	Name           *StringComparisonExp      `json:"name,omitempty"`
-	ValidTimeRange *TstzrangeComparisonExp   `json:"validTimeRange,omitempty"`
+	And            []*PersonBoolExp        `json:"_and,omitempty"`
+	Not            *PersonBoolExp          `json:"_not,omitempty"`
+	Or             []*PersonBoolExp        `json:"_or,omitempty"`
+	Address        *AddressBoolExp         `json:"address,omitempty"`
+	Id             *UuidComparisonExp      `json:"id,omitempty"`
+	Name           *StringComparisonExp    `json:"name,omitempty"`
+	ValidTimeRange *TstzrangeComparisonExp `json:"validTimeRange,omitempty"`
 }
 
 // GetAnd returns PersonBoolExp.And, and is useful for accessing the field via an interface.
@@ -352,9 +350,6 @@ func (v *PersonBoolExp) GetOr() []*PersonBoolExp { return v.Or }
 
 // GetAddress returns PersonBoolExp.Address, and is useful for accessing the field via an interface.
 func (v *PersonBoolExp) GetAddress() *AddressBoolExp { return v.Address }
-
-// GetBirthTime returns PersonBoolExp.BirthTime, and is useful for accessing the field via an interface.
-func (v *PersonBoolExp) GetBirthTime() *TimestamptzComparisonExp { return v.BirthTime }
 
 // GetId returns PersonBoolExp.Id, and is useful for accessing the field via an interface.
 func (v *PersonBoolExp) GetId() *UuidComparisonExp { return v.Id }
@@ -376,7 +371,6 @@ const (
 // input type for inserting data into table "person"
 type PersonInsertInput struct {
 	Address        *AddressObjRelInsertInput `json:"address,omitempty"`
-	BirthTime      *time.Time                `json:"birthTime"`
 	Id             *string                   `json:"id"`
 	Name           *string                   `json:"name"`
 	ValidTimeRange *postgres.TimeRange       `json:"-"`
@@ -384,9 +378,6 @@ type PersonInsertInput struct {
 
 // GetAddress returns PersonInsertInput.Address, and is useful for accessing the field via an interface.
 func (v *PersonInsertInput) GetAddress() *AddressObjRelInsertInput { return v.Address }
-
-// GetBirthTime returns PersonInsertInput.BirthTime, and is useful for accessing the field via an interface.
-func (v *PersonInsertInput) GetBirthTime() *time.Time { return v.BirthTime }
 
 // GetId returns PersonInsertInput.Id, and is useful for accessing the field via an interface.
 func (v *PersonInsertInput) GetId() *string { return v.Id }
@@ -434,8 +425,6 @@ func (v *PersonInsertInput) UnmarshalJSON(b []byte) error {
 type __premarshalPersonInsertInput struct {
 	Address *AddressObjRelInsertInput `json:"address"`
 
-	BirthTime *time.Time `json:"birthTime"`
-
 	Id *string `json:"id"`
 
 	Name *string `json:"name"`
@@ -455,7 +444,6 @@ func (v *PersonInsertInput) __premarshalJSON() (*__premarshalPersonInsertInput, 
 	var retval __premarshalPersonInsertInput
 
 	retval.Address = v.Address
-	retval.BirthTime = v.BirthTime
 	retval.Id = v.Id
 	retval.Name = v.Name
 	{
@@ -508,8 +496,6 @@ func (v *PersonOnConflict) GetWhere() *PersonBoolExp { return v.Where }
 type PersonUpdateColumn string
 
 const (
-	// column name
-	PersonUpdateColumnBirthtime PersonUpdateColumn = "birthTime"
 	// column name
 	PersonUpdateColumnId PersonUpdateColumn = "id"
 	// column name
@@ -607,46 +593,6 @@ func (v *StringComparisonExp) GetRegex() *string { return v.Regex }
 
 // GetSimilar returns StringComparisonExp.Similar, and is useful for accessing the field via an interface.
 func (v *StringComparisonExp) GetSimilar() *string { return v.Similar }
-
-// Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
-type TimestamptzComparisonExp struct {
-	Eq     *time.Time  `json:"_eq"`
-	Gt     *time.Time  `json:"_gt"`
-	Gte    *time.Time  `json:"_gte"`
-	In     []time.Time `json:"_in"`
-	IsNull *bool       `json:"_isNull"`
-	Lt     *time.Time  `json:"_lt"`
-	Lte    *time.Time  `json:"_lte"`
-	Neq    *time.Time  `json:"_neq"`
-	Nin    []time.Time `json:"_nin"`
-}
-
-// GetEq returns TimestamptzComparisonExp.Eq, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetEq() *time.Time { return v.Eq }
-
-// GetGt returns TimestamptzComparisonExp.Gt, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetGt() *time.Time { return v.Gt }
-
-// GetGte returns TimestamptzComparisonExp.Gte, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetGte() *time.Time { return v.Gte }
-
-// GetIn returns TimestamptzComparisonExp.In, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetIn() []time.Time { return v.In }
-
-// GetIsNull returns TimestamptzComparisonExp.IsNull, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetIsNull() *bool { return v.IsNull }
-
-// GetLt returns TimestamptzComparisonExp.Lt, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetLt() *time.Time { return v.Lt }
-
-// GetLte returns TimestamptzComparisonExp.Lte, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetLte() *time.Time { return v.Lte }
-
-// GetNeq returns TimestamptzComparisonExp.Neq, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetNeq() *time.Time { return v.Neq }
-
-// GetNin returns TimestamptzComparisonExp.Nin, and is useful for accessing the field via an interface.
-func (v *TimestamptzComparisonExp) GetNin() []time.Time { return v.Nin }
 
 // Boolean expression to compare columns of type "tstzrange". All fields are combined with logical 'AND'.
 type TstzrangeComparisonExp struct {

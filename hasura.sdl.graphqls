@@ -389,7 +389,6 @@ columns and relationships of "person"
 type Person {
   """An object relationship"""
   address: Address
-  birthTime: timestamptz!
   id: uuid!
   name: String!
   validTimeRange: tstzrange!
@@ -420,7 +419,6 @@ input PersonBoolExp {
   _not: PersonBoolExp
   _or: [PersonBoolExp!]
   address: AddressBoolExp
-  birthTime: TimestamptzComparisonExp
   id: UuidComparisonExp
   name: StringComparisonExp
   validTimeRange: TstzrangeComparisonExp
@@ -441,7 +439,6 @@ input type for inserting data into table "person"
 """
 input PersonInsertInput {
   address: AddressObjRelInsertInput
-  birthTime: timestamptz
   id: uuid
   name: String
   validTimeRange: tstzrange
@@ -449,14 +446,12 @@ input PersonInsertInput {
 
 """aggregate max on columns"""
 type PersonMaxFields {
-  birthTime: timestamptz
   id: uuid
   name: String
 }
 
 """aggregate min on columns"""
 type PersonMinFields {
-  birthTime: timestamptz
   id: uuid
   name: String
 }
@@ -494,7 +489,6 @@ input PersonOnConflict {
 """Ordering options when selecting data from "person"."""
 input PersonOrderBy {
   address: AddressOrderBy
-  birthTime: OrderBy
   id: OrderBy
   name: OrderBy
   validTimeRange: OrderBy
@@ -510,9 +504,6 @@ select columns of table "person"
 """
 enum PersonSelectColumn {
   """column name"""
-  birthTime
-
-  """column name"""
   id
 
   """column name"""
@@ -526,7 +517,6 @@ enum PersonSelectColumn {
 input type for updating data in table "person"
 """
 input PersonSetInput {
-  birthTime: timestamptz
   id: uuid
   name: String
   validTimeRange: tstzrange
@@ -545,7 +535,6 @@ input PersonStreamCursorInput {
 
 """Initial value of the column from where the streaming should start"""
 input PersonStreamCursorValueInput {
-  birthTime: timestamptz
   id: uuid
   name: String
   validTimeRange: tstzrange
@@ -555,9 +544,6 @@ input PersonStreamCursorValueInput {
 update columns of table "person"
 """
 enum PersonUpdateColumn {
-  """column name"""
-  birthTime
-
   """column name"""
   id
 
@@ -627,21 +613,6 @@ input StringComparisonExp {
 
   """does the column match the given SQL regular expression"""
   _similar: String
-}
-
-"""
-Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
-"""
-input TimestamptzComparisonExp {
-  _eq: timestamptz
-  _gt: timestamptz
-  _gte: timestamptz
-  _in: [timestamptz!]
-  _isNull: Boolean
-  _lt: timestamptz
-  _lte: timestamptz
-  _neq: timestamptz
-  _nin: [timestamptz!]
 }
 
 """
@@ -1050,8 +1021,6 @@ type subscription_root {
     where: PersonBoolExp
   ): [Person!]!
 }
-
-scalar timestamptz
 
 scalar tstzrange
 

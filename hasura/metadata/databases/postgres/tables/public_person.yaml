@@ -11,3 +11,28 @@ object_relationships:
         remote_table:
           name: address
           schema: public
+insert_permissions:
+  - role: person-writer
+    permission:
+      check: {}
+      columns:
+        - id
+        - name
+        - valid_time_range
+select_permissions:
+  - role: person-writer
+    permission:
+      columns:
+        - name
+        - valid_time_range
+        - id
+      filter: {}
+update_permissions:
+  - role: person-writer
+    permission:
+      columns:
+        - name
+        - valid_time_range
+        - id
+      filter: {}
+      check: {}
