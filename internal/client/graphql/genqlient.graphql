@@ -4,6 +4,5 @@ mutation CreatePerson($person: PersonInsertInput!) {
     onConflict: { constraint: person_pkey, updateColumns: [id] }
   ) {
     id
-    validTimeRange
   }
 }

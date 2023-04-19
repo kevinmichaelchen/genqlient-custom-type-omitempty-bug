@@ -6,9 +6,7 @@ import (
 	khan "github.com/Khan/genqlient/graphql"
 	"github.com/google/uuid"
 	"github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/internal/client/graphql"
-	"github.com/kevinmichaelchen/genqlient-custom-type-omitempty-bug/pkg/postgres"
 	"net/http"
-	"time"
 )
 
 func main() {
@@ -17,16 +15,11 @@ func main() {
 	client := khan.NewClient("http://localhost:8080/v1/graphql", d)
 
 	id := uuid.New().String()
-	now := time.Now()
 	name := "Kevin"
 
 	_, err := graphql.CreatePerson(ctx, client, &graphql.PersonInsertInput{
 		Id:   &id,
 		Name: &name,
-		ValidTimeRange: &postgres.TimeRange{
-			Start: now,
-			End:   now.Add(time.Hour),
-		},
 	})
 	if err != nil {
 		panic(err)
