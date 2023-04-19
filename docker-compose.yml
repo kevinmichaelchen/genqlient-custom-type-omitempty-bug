@@ -16,7 +16,7 @@ services:
       retries: 5
 
   hasura:
-    image: hasura/graphql-engine:v2.17.1.cli-migrations-v3
+    image: hasura/graphql-engine:v2.23.0.cli-migrations-v3
     ports:
       - "127.0.0.1:8080:8080"
     depends_on:
@@ -36,6 +36,8 @@ services:
       HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
       HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: naming_convention
       HASURA_GRAPHQL_DEFAULT_NAMING_CONVENTION: graphql-default
+      HASURA_GRAPHQL_JWT_SECRET: >
+        {"type":"HS256", "key": "9PTZJh08kguEJVI1So6KsNegE8mG2h5g"}
 
 volumes:
   pg_data:
